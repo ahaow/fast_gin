@@ -2,6 +2,7 @@ package user_api
 
 import (
 	"fast_gin/global"
+	"fast_gin/middleware"
 	"fast_gin/models"
 	"fast_gin/utils/jwt"
 	"fast_gin/utils/pwd"
@@ -17,9 +18,13 @@ type LoginRequest struct {
 }
 
 func (UserApi) LoginView(c *gin.Context) {
-	var req LoginRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		res.FailWithError(err, c)
+	// var req LoginRequest
+	// if err := c.ShouldBindJSON(&req); err != nil {
+	// 	res.FailWithError(err, c)
+	// 	return
+	// }
+	req, ok := middleware.BindJSON[LoginRequest](c)
+	if !ok {
 		return
 	}
 	// 查询用户

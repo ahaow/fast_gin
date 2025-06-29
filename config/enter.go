@@ -8,4 +8,5 @@ type Config struct {
 	Database Database
 	Redis    Redis
 	Jwt      Jwt
+	Upload   Upload
 }
