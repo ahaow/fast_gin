@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fast_gin/errors"
 	"fast_gin/global"
 
 	"github.com/gin-gonic/gin"
@@ -12,9 +13,12 @@ func Run() {
 	r := gin.Default()
 	r.Static("/uploads", "uploads")
 
+	r.Use(errors.ErrorHandler())
+
 	g := r.Group("api")
 	UserRouter(g)
 	ImagesRouter(g)
+	FilesRouter(g)
 
 	if port == "" {
 		port = ":3000"

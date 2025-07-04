@@ -32,7 +32,7 @@ func (UserApi) LoginView(c *gin.Context) {
 	err := global.DB.Where("username = ?", req.Username).First(&user).Error
 
 	if err == gorm.ErrRecordNotFound {
-		res.FailWithMsg("用户不存在", c)
+		res.FailWithMsg("用户名或者密码错误", c)
 		return
 	} else if err != nil {
 		res.FailWithMsg("查询错误", c)
@@ -47,6 +47,7 @@ func (UserApi) LoginView(c *gin.Context) {
 
 	token, err := jwt.GenerateJWT(req.Username)
 	if err != nil {
+		global.Log.Sugar().Errorf("生成 Token 失败: %v", err)
 		res.FailWithMsg("生成 Token 失败", c)
 		return
 	}
